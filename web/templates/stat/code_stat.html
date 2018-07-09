@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block content %}
+<div class="container-fluid">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                {% for col in data.columns[:-1] %}
+                <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for _, items in data.iterrows() %}
+            <tr>
+                <td>
+                    <a onclick='show_graph("{{ url_for('graph.show_min_graph', code=code, date=(items.date | int)) }}")' href="">{{ items.date | int }}</a>
+                </td>
+                <td>{{ "%.2f" % items.prev_close }}</td>
+                <td class="{% if items.st_open > items.prev_close %}{{ 'text-danger' }}{% elif items.st_open < items.prev_close %}{{ 'text-success' }}{% endif %}">{{ "%.2f" % items.st_open }}</td>
+                <td>{{ "%.2f" % items.st_price }}</td>
+                <td class="{% if items.chg > 0 %}{{ 'text-danger' }}{% elif items.chg < 0 %}{{ 'text-success' }}{% endif %}">{{ "%.2f%%" % items.chg }}</td>
+                <td class="{% if items.high > 0 %}{{ 'text-danger' }}{% elif items.high < 0 %}{{ 'text-success' }}{% endif %}">{{ "%.2f%%" % items.high }}</td>
+                <td class="{% if items.low > 0 %}{{ 'text-danger' }}{% elif items.low < 0 %}{{ 'text-success' }}{% endif %}">{{ "%.2f%%" % items.low }}</td>
+                <td class="{% if items.down_vol > 0 and (items.up_vol / items.down_vol > 1.5) %}{{ 'text-danger' }}{% endif %}">{{ "{:,}".format(items.up_vol | int) }}</td>
+                <td>{{ "{:,}".format(items.down_vol | int) }}</td>
+                <td>{{ "{:,}".format(items.st_vol | int) }}</td>
+                <td>{{ "%.3f" % items.up_mean }}</td>
+                <td>{{ "%.3f" % items.down_mean }}</td>
+                <td>{{ "%.3f" % items.t_mean }}</td>
+                <td class="{% if items.sh_ind > items.sh_prev_close %}{{ 'text-danger' }}{% elif items.sh_ind < items.sh_prev_close %}{{ 'text-success' }}{% endif %}">{{ "%.4f" % items.sh_ind }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    function show_graph(url) {
+        var iWidth = 654;
+        var iHeight = 400;
+        var iTop = (window.screen.availHeight - 30 - iHeight) / 2;
+        var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
+        var openNewLink = window.open(url, "", "height=" + iHeight + ", width=" + iWidth + ", top=" + iTop + ", left=" + iLeft);
+        if (window.focus) {
+            openNewLink.focus();
+        }
+        return false;
+    }
+</script>
+{% endblock %}

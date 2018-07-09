@@ -1,0 +1,20 @@
+    {{ t }}
+    <table class="table table-striped">
+        {% for items in  data %}
+            <tr>
+                <td>{{ items[0] }}</td>
+                <td>{{ items[2] }}</td>
+                <td>{{ items[3] }}</td>
+                <td>{{ (items[3] | float) - (items[2] | float) }}</td>
+                <td class="{% if (items[3] | float) > (items[2] | float) %}{{ 'text-danger' }}{% elif (items[3] | float) < (items[2] | float) %}{{ 'text-success' }}{% endif %}">
+                    {% if (items[2] | float) > 0%}
+                        {{ "%.2f%%" % ((items[3] | float) / (items[2] | float) * 100 - 100) }}
+                    {% else %}
+                        -
+                    {% endif %}
+
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+

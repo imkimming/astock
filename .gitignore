@@ -1,0 +1,7 @@
+.vscode
+db/*
+graph/*
+logs/*
+stat/*
+*.csv
+*.pyc

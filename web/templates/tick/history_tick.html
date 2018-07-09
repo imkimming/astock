@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block content %}
+<div class="container-fluid">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                {% for col in data.columns[:-3] %}
+                <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for _, items in data.iterrows() %}
+            <tr>
+                <td>
+                    {{ "%.2f" % items.price }}
+                </td>
+                <td class="{% if items.chg > 0 %}{{ 'text-danger' }}{% elif items.chg < 0 %}{{ 'text-success' }}{% endif %}">{{ "%.2f%%" % (items.chg * 100) }}</td>
+                <td class="{% if items.up_down > 0 %}{{ 'text-danger' }}{% elif items.up_down < 0 %}{{ 'text-success' }}{% endif %}">
+                    {% if items.up_down > 0 %} + {% elif items.up_down < 0 %} - {% endif %}{{ (items.vol_chg / 100) | int }}
+                </td>
+                <td>{{ (items.up_vol / 100) | int }}</td>
+                <td>{{ (items.down_vol / 100) | int }}</td>
+                <td>{{ (items.volumn / 100) | int }}</td>
+                <td>{{ "%.3f" % items.up_mean }}</td>
+                <td>{{ "%.3f" % items.down_mean }}</td>
+                <td>{{ "%.3f" % items.t_mean }}</td>
+                <td>{{ "%.2f" % items.ask_price_1 }} : {{ (items.ask_vol_1 / 100) | int }}</td>
+                <td>{{ "%.2f" % items.bid_price_1 }} : {{ (items.bid_vol_1 / 100) | int }}</td>
+                <td>{{ items.time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

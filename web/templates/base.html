@@ -1,0 +1,33 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}CTA Data{% endblock %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">CTP Data</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    {% if code %}
+                        <li><a href="{{ request.url_root }}?type=raise">Raise</a></li>
+                        <li><a href="{{ request.url_root }}?type=fall">Fall</a></li>
+                        <li><a href="{{ request.url_root }}?type=wave">Wave</a></li>
+                        <li><a href="{{ request.url_root }}?type=buy">Most Buy</a></li>
+                    {% else %}
+                        <li><a href="{{ request.url_base }}?type=raise">Raise</a></li>
+                        <li><a href="{{ request.url_base }}?type=fall">Fall</a></li>
+                        <li><a href="{{ request.url_base }}?type=wave">Wave</a></li>
+                        <li><a href="{{ request.url_base }}?type=buy">Most Buy</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}{% endblock %}
+

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block navbar %}{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <p>
+    <ul class="list-inline">
+        <li><a href="{{ url_for('graph.show_graph', code=data.code, g_type='daily') }}">Daily</a></li>
+        <li><a href="{{ url_for('graph.show_graph', code=data.code, g_type='weekly') }}">Weekly</a></li>
+        <li><a href="{{ url_for('graph.show_graph', code=data.code, g_type='monthly') }}">Monthly</a></li>
+        <li><a href="http://finance.sina.com.cn/realstock/company/{{ data.code }}/nc.shtml" target="_blank">Sina</a></li>
+        <li><a href="https://xueqiu.com/S/{{ data.code }}" target="_blank">Xueqiu</a></li>
+        {% if data.date %}
+            <li><a href="{{ url_for('tick.history_tick', code=data.code, date=data.date) }}" target="_blank">History Tick</a><li>
+        {% endif %}
+    </ul></p>
+    {% if data.date %}
+        <img src="{{ url_for('graph.get_min_graph', code=data.code, date=data.date) }}" class="img-responsive center-block" width="120%" height="120%">
+    {% else %}
+        <img src="{{ url_for('graph.get_graph', code=data.code, g_type=data.g_type) }}" class="img-responsive center-block" width="120%" height="120%">
+    {% endif %}
+</div>
+
+{% endblock %}

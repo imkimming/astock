@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <table class="table table-striped" id="stat">
+        <thead>
+            <tr>
+                {% for col in data.columns %}
+                    <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for _, items in data.iterrows() %}
+            <tr>
+                <td><a href="{{ url_for('stat.code_stat', code=items.code) }}" target="_blank" data-code="{{ items.code }}">{{ items.code }}</a></td>
+                <td>{{ "%.2f" % items.prev_close }}</td>
+                <td class="{% if items.st_open > items.prev_close %}{{ 'text-danger' }}{% elif items.st_open < items.prev_close %}{{ 'text-success' }}{% endif %}">{{ "%.2f" % items.st_open }}</td>
+                <td>{{ "%.2f" % items.st_price }}</td>
+                <td class="{% if items.chg > 0 %}{{ 'text-danger' }}{% elif items.chg < 0 %}{{ 'text-success' }}{% endif %}">{{ "%.2f%%" % items.chg }}</td>
+                <td class="{% if items.high > 0 %}{{ 'text-danger' }}{% elif items.high < 0 %}{{ 'text-success' }}{% endif %}">{{ "%.2f%%" % items.high }}</td>
+                <td class="{% if items.low > 0 %}{{ 'text-danger' }}{% elif items.low < 0 %}{{ 'text-success' }}{% endif %}">{{ "%.2f%%" % items.low }}</td>
+                <td class="{% if items.down_vol > 0 and (items.up_vol / items.down_vol > 1.5) %}{{ 'text-danger' }}{% endif %}">{{ "{:,}".format(items.up_vol | int) }}</td>
+                <td>{{ "{:,}".format(items.down_vol | int) }}</td>
+                <td>{{ "{:,}".format(items.st_vol | int) }}</td>
+                <td>{{ "%.3f" % items.up_mean }}</td>
+                <td>{{ "%.3f" % items.down_mean }}</td>
+                <td>{{ "%.3f" % items.t_mean }}</td>
+            </tr>
+            {% endfor %}
+        </tbody
+    </table>
+</div>
+<div id="realtick" class="popbox">
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/events.js') }}"></script>
+{% endblock %}
